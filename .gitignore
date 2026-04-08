@@ -1,0 +1,7 @@
+uv.lock
+*.iml
+.venv/
+.idea/
+
+# 测试用
+captcha.png
