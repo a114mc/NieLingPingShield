@@ -6,7 +6,7 @@
 
 <img src="./readme_files/captcha.2AM4.png" alt="captcha image">
 
-验证码允许的字符：`2345678ABCDEFGHJKMNPQRSTUVWYZ`
+验证码允许的字符：`2345678ABCDEFGHJKMNPQRSTUVWXYZ`
 
 
 [发送邮箱验证码](./readme_files/emailverify.http)
