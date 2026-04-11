@@ -34,7 +34,7 @@
 {"code":600,"message":"请等待60秒后再发送验证码","data":null}
 ```
 
-注：一个验证码可以多次使用，也就是你*短时间内*emailverify email admin@gov.cn captcha cfcy，把email换成admin@google.com也行（code 但是201或者600就得重新识别验证码）。
+注：一个验证码可以多次使用，也就是你*短时间内*emailverify email admin@gov.cn captcha cfcy，把email换成admin@google.com也行。
 注：目前你需要带好JSESSIONID cookie
 
 
