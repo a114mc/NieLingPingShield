@@ -32,6 +32,7 @@ if __name__ == '__main__':
     try:
         res = session.get(url_captcha)
     except requests.exceptions.SSLError:
+        print("L bad proxy")
         exit(1)
     if res.status_code != 200:
         print(f"聂凌平\'s captcha APi returned status code {res.status_code}")
