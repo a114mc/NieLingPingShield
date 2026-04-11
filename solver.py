@@ -1,82 +1,56 @@
 #!/usr/bin/env python3
-
-import lmstudio as lms
-import requests, io
 import sys
+import io
+import requests
+import lmstudio as lms
 
-if __name__ == '__main__':
-    modelName = "internvl3-1b-instruct"
-    url = "https://www.jarguardpro.cn/api/captcha"
-    print("Loading image")
-    response = requests.get(url)
-    print("Obtained captcha image")
+def solve_captcha(image_buffer):
+    model_name = "glm-ocr"
+    image_handle = lms.prepare_image(image_buffer)
+    model = lms.llm(model_name)
 
-    cookie = response.cookies.get("JSESSIONID")
-
-    jarGuardProAss = {
-        "JSESSIONID":    cookie
-    }
-
-    # Fuck Pycharm
-    if cookie is not None:
-        print("Obtained cookie JSESSIONID (" + cookie + ")")
-    else:
-        print("What the fuck JSESSIONID is None?!")
-        exit(0)
-
-    # Convert response content into a bytes buffer
-    imageBuffer = io.BytesIO(response.content)
-
-    # captchaPath = "captcha.png"
-
-    # with open(captchaPath, "wb") as f:
-    #     f.write(imageBuffer.getvalue())
-    #     print("Wrote captcha to " + captchaPath)
-
-    image_handle = lms.prepare_image(imageBuffer)
-    model = lms.llm(modelName)
     chat = lms.Chat()
     chat.add_system_prompt(
-"""
-您即将看到一张图片，您需要从左到右定位图片中4个字符的位置,逐个字符识别（每次只识别一个）,最终拼接为4个字符!
-可能出现的字符包含'23456789ABCDEFGHJKMNPQRSTUVWXYZ'，但是有一些你需要注意的。
-比如说，字母Q不会以小写的形式出现，字母X可能会像一个非ASCII字符，图片中还可能有一些干扰物。
-下面是你的自检规则，你必须重点注意：
-- 是否正好4个字符？
-- 是否全部属于给定集合？
-- 是否全部为ASCII字符？
-- 是否包含空格？
+        "Identify and output 4 characters from the image. Characters: 23456789ABCDEFGHJKMNPQRSTUVWXYZ. No spaces, no extra text. If the image appears to be broken or youy can't see it, response with 'Fuck!'(That's ok)"
+    )
+    chat.add_user_message("Captcha image:", images=[image_handle])
 
-如果不满足，请重新识别。
+    response = model.respond(chat)
+    # Sanitise: remove newlines, spaces, and quotes
+    return response.content.strip().replace(" ", "").replace('"', '')
 
-最终输出要求（非常重要）：
-- 只输出最终验证码
-- 不要解释
-- 不要空格
-- 不要换行
-""")
-    chat.add_user_message("请严格按照系统指令识别验证码，并只输出最终结果。", images=[image_handle])# Note: You need to write your own system prompt for the LLM.
-    prediction = model.respond(chat)
+if __name__ == '__main__':
+    if len(sys.argv) < 2:
+        print("Usage: ./script.py <email>")
+        sys.exit(1)
 
-    captchaText = prediction.content
+    email = sys.argv[1]
+    url_captcha = "https://www.jarguardpro.cn/api/captcha"
 
-    if len(captchaText)  != 4:
-        print("喜报：" + modelName + "返回了 " + captchaText)
+    session = requests.Session() # Session automatically handles cookies
+    res = None
+    try:
+        res = session.get(url_captcha)
+    except requests.exceptions.SSLError:
+        exit(1)
+    if res.status_code != 200:
+        print(f"聂凌平\'s captcha APi returned status code {res.status_code}")
+        print(f"Content dump:\n {res.content.decode('utf-8')}")
         exit(1)
 
-    print("Captcha result: " + captchaText)
+    img_io = io.BytesIO(res.content)
+    captcha_text = solve_captcha(img_io)
 
-    # email = input("Input email here:")
-    email = sys.argv[1]
+    if len(captcha_text) != 4:
+        print(f"Failure: Model returned '{captcha_text}'")
+        sys.exit(1)
 
-    # noinspection PyTypeChecker
-    # 没事
-    response =  requests.get("https://www.jarguardpro.cn/api/emailverify?email="
-                 + email
-                 + "&captcha="
-                 + captchaText,
-                 cookies = jarGuardProAss
-                 )
+    print(f"Recognized: {captcha_text}")
 
-    print("Response:")
-    print(response.content.decode('utf-8'))
+    verify_url = f"https://www.jarguardpro.cn/api/emailverify?email={email}&captcha={captcha_text}"
+    res_verify = session.get(verify_url)
+
+    if res_verify.status_code == 200:
+        print(res_verify.json().get('message'))
+    else:
+        print(f"Status {res_verify.status_code}: {res_verify.text}")
