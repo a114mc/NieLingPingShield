@@ -14,7 +14,7 @@
 
 <img src="./readme_files/captcha.2AM4.png" alt="captcha image">
 
-[发送邮箱验证码\(API Dead\)](./readme_files/emailverify.http)
+[发送邮箱验证码](./readme_files/emailverify.http)
 
 成功返回
 ```json
@@ -33,7 +33,7 @@
 {"code":600,"message":"请等待60秒后再发送验证码","data":null}
 ```
 
-被聂凌平IPBan
+被聂凌平自动IPBan
 
 ```json
 {"code":429,"message":"您的请求过于频繁,请1小时后再试","data":null}
@@ -43,8 +43,16 @@
 {"code":429,"message":"您的网络环境异常,已被限制访问,请1小时后再试","data":null}
 ```
 
+被聂凌平自手动IPBan:
+
+```text
+401(Nothing else)
+```
+
 注：一个验证码可以多次使用,也就是你*短时间内*emailverify email admin@gov.cn captcha cfcy,把email换成admin@google.com也行。
 注：目前你需要带好JSESSIONID cookie
+注：老傻子聂凌平不检测请求头,`User-Agent`不包含`Mozilla`都不自动风控
+注：碰到Rate limiter了你把delay拉大点就随便了
 
 
 Solving the captcha(Extract 4 characters from image):

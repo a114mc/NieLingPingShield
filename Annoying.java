@@ -1,5 +1,8 @@
 public class Annoying {
     public static void main(String[] args) {
+        if (args.length < 1){
+            System.out.println("Usage: java Annoying.java [address@emailprovider.com]");
+        }
         System.out.println("Victim: " + args[0]);
         while (true) {
             try {
