@@ -52,6 +52,7 @@
 注：一个验证码可以多次使用,也就是你*短时间内*emailverify email admin@gov.cn captcha cfcy,把email换成admin@google.com也行。
 注：目前你需要带好JSESSIONID cookie
 注：老傻子聂凌平不检测请求头,`User-Agent`不包含`Mozilla`都不自动风控
+注：老傻子聂凌平封IP不封JSESSIONID
 注：碰到Rate limiter了你把delay拉大点就随便了
 
 
