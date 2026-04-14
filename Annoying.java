@@ -14,7 +14,7 @@ public class Annoying {
                 t.printStackTrace();
             }
             try {
-                Thread.sleep(15 * 1000L);
+                Thread.sleep(120 * 1000L);
             } catch (InterruptedException e) {
 
             }
