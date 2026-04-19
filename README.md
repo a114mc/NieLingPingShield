@@ -3,14 +3,15 @@
 <img src="./readme_files/whois.png" alt="jarguardpro.cn Registrant: 聂凌平">
 </div>
 
-# Deobfuscation transformers are vibe coded since I don't wanna wast my time on writing deobfuscation transformers an AI slop obfuscator.
+# Deobfuscation transformers are vibe coded; I don't want to waste my time on writing deobfuscation transformers for a vibe-coded obfuscator.
 
 <img src="./readme_files/sb.png" alt="聂凌平手动封禁我的IP一小时,操你妈">
 
 <img src="./readme_files/deadass.png" alt="API Captcha 502, rest in piss deadass.">
 
 # JarGuardPro 邮箱验证码自动化发送思路
-
+# 注：内容仅供参考，实际返回/请求可能会更新，本项目不保证能够在前端更新后第一时间处理。
+# 注：返回经过格式化输出，实际处理请使用json库来解析。
 [获取captcha\(返回图片\)](./readme_files/captcha.http)
 
 验证码图片
@@ -74,10 +75,15 @@
 ```
 
 注：一个验证码可以多次使用,也就是你*短时间内*emailverify email admin@gov.cn captcha cfcy,把email换成admin@google.com也行。
+
 注：目前你需要带好JSESSIONID cookie
+
 注：老傻子聂凌平不检测请求头,`User-Agent`不包含`Mozilla`都不自动风控
+
 注：老傻子聂凌平封IP不封JSESSIONID
+
 ~~注：碰到Rate limiter了你把delay拉大点就随便了~~
+
 注：现在Rate limiter增强了所以你需要代理池来短时间内spam一个人的邮箱
 
 Solving the captcha(Extract 4 characters from image):
