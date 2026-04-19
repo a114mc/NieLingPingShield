@@ -1,4 +1,7 @@
-# 警告：聂凌平有很高的概率在监控本项目！
+
+<div align="center">
+<img src="./readme_files/whois.png" alt="jarguardpro.cn Registrant: 聂凌平">
+</div>
 
 # Deobfuscation transformers are vibe coded since I don't wanna wast my time on writing deobfuscation transformers an AI slop obfuscator.
 
