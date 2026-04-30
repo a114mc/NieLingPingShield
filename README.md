@@ -102,4 +102,5 @@ Use `InternVL3-1B-Instruct-GGUF` or `glm-ocr`.
 <img src="./readme_files/AcceptTerms1.png" alt = "That's ok...">
 <img src="./readme_files/AcceptTerms2.png" alt = "But.. WTF?">
 <img src="./readme_files/recover404.png" alt = "He is trying to copy-paste AI slop but forgot to fix links, resulting users cannot recover accounts normally.">
+<img src="./readme_files/Typo.png" alt = "Jar Gurad Pro">
 </div>
